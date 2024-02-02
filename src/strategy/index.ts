@@ -4,14 +4,14 @@ abstract class CashSuper {
 }
 
 // 正常收费子类
-export class CashNormal implements CashSuper {
+class CashNormal implements CashSuper {
   public acceptCash(money: number): number {
     return money;
   }
 }
 
 // 打折收费子类
-export class CashRebate implements CashSuper {
+class CashRebate implements CashSuper {
   constructor(public moneyRebate: number) {}
 
   public acceptCash(money: number): number {
@@ -20,7 +20,7 @@ export class CashRebate implements CashSuper {
 }
 
 // 返利收费子类
-export class CashReturn implements CashSuper {
+class CashReturn implements CashSuper {
   constructor(public moneyCondition: number, public moneyReturn: number) {}
 
   public acceptCash(money: number): number {
@@ -32,7 +32,7 @@ export class CashReturn implements CashSuper {
 }
 
 // 现金上下文
-export default class CashContext {
+class CashContext {
   private cashSuper: CashSuper;
 
   constructor(cashSuper: CashSuper) {
@@ -43,3 +43,19 @@ export default class CashContext {
     return this.cashSuper.acceptCash(money);
   }
 }
+
+function clientCode() {
+  // 无优惠
+  let cashContext = new CashContext(new CashNormal());
+  console.log(cashContext.getResult(400));
+
+  // 打8折
+  cashContext = new CashContext(new CashRebate(0.8));
+  console.log(cashContext.getResult(400));
+
+  // 满300减100
+  cashContext = new CashContext(new CashReturn(300, 100));
+  console.log(cashContext.getResult(400));
+}
+
+clientCode();

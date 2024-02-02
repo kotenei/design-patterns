@@ -39,26 +39,42 @@ class OperationDiv extends Operation {
   }
 }
 
-type operate = "+" | "-" | "*" | "/";
+// 工厂接口
+interface IFactory {
+  createOperat(): Operation;
+}
 
-// 运算工厂类，根据运算符返回相应的运算实例
-class OperationFactory {
-  public static createOperate(operate: operate): Operation {
-    switch (operate) {
-      case "+":
-        return new OperationAdd();
-      case "-":
-        return new OperationSub();
-      case "*":
-        return new OperationMul();
-      case "/":
-        return new OperationDiv();
-    }
+// 加法工厂
+class AddFactory implements IFactory {
+  createOperat(): Operation {
+    return new OperationAdd();
+  }
+}
+
+// 减法工厂
+class SubFactory implements IFactory {
+  createOperat(): Operation {
+    return new OperationSub();
+  }
+}
+
+// 乘法工厂
+class MulFactory implements IFactory {
+  createOperat(): Operation {
+    return new OperationMul();
+  }
+}
+
+// 除法工厂
+class DivFactory implements IFactory {
+  createOperat(): Operation {
+    return new OperationDiv();
   }
 }
 
 function clientCode() {
-  const operation = OperationFactory.createOperate("+");
+  const operFactory: IFactory = new AddFactory();
+  const operation: Operation = operFactory.createOperat();
   operation.numberA = 1;
   operation.numberB = 2;
   console.log(operation.getResult());
